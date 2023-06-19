@@ -1,0 +1,21 @@
+.logo {
+	color: greenyellow;
+	text-align: center;
+}
+
+.container {
+	border-radius: 30px;
+	border: black solid 2px;
+	text-align: center;
+}
+
+a {
+	font-size: 0.8rem;
+	text-decoration: none;
+	color: dodgerblue;
+}
+
+.saul-goodman:hover {
+	background-image: url("./../public/saul.gif");
+	background-size: cover;
+}
