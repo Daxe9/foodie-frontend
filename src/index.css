@@ -1,6 +1,7 @@
-.logo {
-	color: greenyellow;
-	text-align: center;
+body {
+	margin: 0;
+	padding: 0;
+	max-height: 100vh;
 }
 
 .container {
@@ -13,6 +14,10 @@ a {
 	font-size: 0.8rem;
 	text-decoration: none;
 	color: dodgerblue;
+}
+
+a:hover {
+	color: #e9c46a;
 }
 
 .saul-goodman:hover {

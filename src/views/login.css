@@ -1,0 +1,32 @@
+.page {
+	background-image: url("../../public/ratatouille.gif");
+	background-size: cover;
+}
+
+.login-div {
+	height: 100vh;
+	width: clamp(0px, 100%, 450px);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	background-color: #e9c46a;
+}
+
+.button {
+	height: 30px;
+	border-radius: 10px;
+	font-size: 1.2em;
+	border: none;
+	background-color: #2a9d8f;
+	width: 40%;
+	margin-bottom: 10px;
+	color: white;
+}
+
+.container {
+	background-color: white;
+	width: clamp(250px, 80%, 350px);
+	padding-bottom: 20px;
+	padding-top: 10px;
+}
