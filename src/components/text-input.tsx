@@ -1,7 +1,9 @@
 import "./text-input.css";
-type TextInputProp = {
+interface TextInputProp {
 	text: string;
-};
+	pattern?: RegExp;
+}
+
 export default function TextInput(props: TextInputProp) {
 	const id = props.text.toLowerCase().replace(" ", "_");
 	const regexPattern: string = props.pattern ? props.pattern.toString() : "";
