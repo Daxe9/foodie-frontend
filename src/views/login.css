@@ -30,3 +30,13 @@
 	padding-bottom: 20px;
 	padding-top: 10px;
 }
+
+a {
+	font-size: 0.8rem;
+	text-decoration: none;
+	color: dodgerblue;
+}
+
+a:hover {
+	color: #e9c46a;
+}

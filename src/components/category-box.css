@@ -1,0 +1,19 @@
+.categoryBox {
+	margin: 2em;
+	accent-color: #e9c46a;
+	text-align: center;
+}
+
+.categoryBox select {
+	background-color: #2a9d8f;
+	color: white;
+	border: none;
+	border-radius: 10px;
+	font-size: 1em;
+	padding: 4px 8px;
+}
+
+.categoryBox select:hover {
+	background-color: #e9c46a;
+	color: #e76f51;
+}

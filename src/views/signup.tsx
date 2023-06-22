@@ -1,26 +1,28 @@
 import "./signup.css";
 import TextInput from "../components/text-input.tsx";
 import FoodieLogo from "../components/foodie-logo.tsx";
-import React, { createRef, JSX, useRef, useState } from "react";
-import { Person, Restaurant, User, TimeTable } from "../types/entities.ts";
+import TimeTableHTML from "../components/time-table.tsx";
+import CategoryBox from "../components/category-box.tsx";
+import React, { createRef, JSX, useState } from "react";
+// import { useNavigate } from "react-router-dom";
+import { Person, TimeTable, User } from "../types/entities.ts";
+import { UserNamespace } from "../services/axios.service.ts";
+import { validateUser } from "../services/validation.service.ts";
 
 function Signup() {
+	// const navigate = useNavigate();
 	const user: React.RefObject<HTMLInputElement> = createRef();
 	const restaurant: React.RefObject<HTMLInputElement> = createRef();
 	const rider: React.RefObject<HTMLInputElement> = createRef();
-
-	const opening1 = useRef<HTMLInputElement>(null);
-	const opening2 = useRef<HTMLInputElement>(null);
-	const closing1 = useRef<HTMLInputElement>(null);
-	const closing2 = useRef<HTMLInputElement>(null);
-
-	const [roleDiv, setRoleDiv] = useState<JSX.Element>(
-		<>
-			<TextInput text={"First name"} />
-			<TextInput text={"Last name"} />
-		</>
-	);
-	let day: string = "monday";
+	let categories: string[] = [
+		"Italian",
+		"Mexican",
+		"Pizzeria",
+		"Kebab",
+		"Chinese",
+		"Fast Food",
+		"Japanese"
+	];
 	let timeTable: TimeTable = {
 		monday: {
 			opening1: null,
@@ -66,11 +68,12 @@ function Signup() {
 		}
 	};
 
-	function selectDay(event: any) {
-		document.getElementById(day)?.classList.remove("selected");
-		day = event.target.id;
-		document.getElementById(day)?.classList.add("selected");
-	}
+	const [roleDiv, setRoleDiv] = useState<JSX.Element>(
+		<>
+			<TextInput text={"First name"} />
+			<TextInput text={"Last name"} />
+		</>
+	);
 
 	function selectedRadio(): string | undefined {
 		if (user.current?.checked) {
@@ -89,8 +92,14 @@ function Signup() {
 			case "User":
 				setRoleDiv(
 					<>
-						<TextInput text="First name" />
-						<TextInput text="Last name" />
+						<TextInput
+							text="First name"
+							pattern={new RegExp(/^[A-Za-z\s'-]+$/gm)}
+						/>
+						<TextInput
+							text="Last name"
+							pattern={new RegExp(/^[A-Za-z\s'-]+$/gm)}
+						/>
 					</>
 				);
 				break;
@@ -98,94 +107,8 @@ function Signup() {
 				setRoleDiv(
 					<>
 						<TextInput text="Restaurant name" />
-
-						<div className="time-table">
-							<p>Time table:</p>
-							<button
-								id="monday"
-								title="Monday"
-								onClick={selectDay}
-								className="time-button selected"
-							>
-								M
-							</button>
-							<button
-								id="tuesday"
-								title="Tuesday"
-								onClick={selectDay}
-								className="time-button"
-							>
-								T
-							</button>
-							<button
-								id="wednesday"
-								title="Wednesday"
-								onClick={selectDay}
-								className="time-button"
-							>
-								W
-							</button>
-							<button
-								id="thursday"
-								title="Thursday"
-								onClick={selectDay}
-								className="time-button"
-							>
-								T
-							</button>
-							<button
-								id="friday"
-								title="Friday"
-								onClick={selectDay}
-								className="time-button"
-							>
-								F
-							</button>
-							<button
-								id="saturday"
-								title="Saturday"
-								onClick={selectDay}
-								className="time-button"
-							>
-								S
-							</button>
-							<button
-								id="sunday"
-								title="Sunday"
-								onClick={selectDay}
-								className="time-button"
-							>
-								S
-							</button>
-							<div className="time-inputs">
-								<input
-									id="opening1-input"
-									ref={opening1}
-									onChange={setTimeTable}
-									type="time"
-								/>
-								<input
-									id="closing1-input"
-									ref={closing1}
-									onChange={setTimeTable}
-									type="time"
-								/>
-							</div>
-							<div className="time-inputs">
-								<input
-									id="opening2-input"
-									ref={opening2}
-									onChange={setTimeTable}
-									type="time"
-								/>
-								<input
-									id="closing2-input"
-									ref={closing2}
-									onChange={setTimeTable}
-									type="time"
-								/>
-							</div>
-						</div>
+						<CategoryBox options={categories} />
+						<TimeTableHTML timeTable={timeTable} />
 					</>
 				);
 				break;
@@ -208,10 +131,10 @@ function Signup() {
 			email: "",
 			password: "",
 			address: "",
-			phone: 0
+			phone: ""
 		};
 		temp.email = (
-			document.getElementById("e-mail") as HTMLInputElement
+			document.getElementById("email") as HTMLInputElement
 		).value;
 		temp.password = (
 			document.getElementById("password") as HTMLInputElement
@@ -219,51 +142,59 @@ function Signup() {
 		temp.address = (
 			document.getElementById("address") as HTMLInputElement
 		).value;
-		temp.phone = parseInt(
-			(document.getElementById("phone_number") as HTMLInputElement).value
-		) as number;
+		temp.phone = (
+			document.getElementById("phone") as HTMLInputElement
+		).value;
 		return temp;
 	}
 
-	function setTimeTable() {
-		// @ts-ignore
-		const dayReference = timeTable[day];
-		dayReference["opening1"] = opening1.current?.value;
-		dayReference["opening2"] = opening2.current?.value;
-		dayReference["closing1"] = closing1.current?.value;
-		dayReference["closing2"] = closing2.current?.value;
-		console.log(timeTable);
-	}
-
-	function getUserData() {
-		const userData = getBaseInformation() as User;
-		userData.firstName = (
-			document.getElementById("first_name") as HTMLInputElement
+	function getUserData(): {
+		firstName: string;
+		lastName: string;
+	} {
+		const temp: any = {};
+		temp.firstName = (
+			document.getElementById("firstName") as HTMLInputElement
 		).value;
-		userData.lastName = (
-			document.getElementById("last_name") as HTMLInputElement
+		temp.lastName = (
+			document.getElementById("lastName") as HTMLInputElement
 		).value;
-		return userData;
+		return temp;
 	}
 
 	function getRestaurantData() {
-		const restaurantData = getBaseInformation() as Restaurant;
+		const temp: any = {};
 
-		restaurantData.name = (
-			document.getElementById("restaurant_name") as HTMLInputElement
+		temp.name = (
+			document.getElementById("restaurantName") as HTMLInputElement
 		).value;
-		restaurantData.timeTable = timeTable;
-		return restaurantData;
+		temp.category = (
+			document.getElementById("category") as HTMLInputElement
+		).value;
+		temp.timeTable = timeTable;
+		console.log(temp);
+		return temp;
 	}
 
 	function getRiderData() {
 		return getBaseInformation();
 	}
 
-	function signUp() {
+	async function signUp() {
+		const baseObj = getBaseInformation();
 		switch (selectedRadio()) {
 			case "User":
-				getUserData();
+				try {
+					const userData: User = await validateUser({
+						...baseObj,
+						...getUserData()
+					});
+					await UserNamespace.register(userData);
+				} catch (e: any) {
+					// pop up for showing errors
+					console.error(e.message);
+				}
+				// navigate("/user/homepage");
 				break;
 			case "Restaurant":
 				getRestaurantData();
@@ -273,39 +204,16 @@ function Signup() {
 		}
 	}
 
-	//function setTimeTable() {}
-
 	return (
 		<div className="page">
 			<div className="signup-div">
 				<FoodieLogo></FoodieLogo>
 				<br />
 				<div className="container">
-					<TextInput
-						text="E-mail"
-						pattern={
-							new RegExp(
-								/(?:[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/gm
-							)
-						}
-					/>
-					<TextInput
-						text="Password"
-						pattern={
-							new RegExp(
-								/^(?=(.*[a-z])+)(?=(.*[A-Z])+)(?=(.*[0-9])+)(?=(.*[!@#$%^&*()\-,_+.])+).{8,}$/
-							)
-						}
-					/>
+					<TextInput text="E-mail" />
+					<TextInput text="Password" type="password" />
 					<TextInput text="Address" />
-					<TextInput
-						text="Phone number"
-						pattern={
-							new RegExp(
-								/^(?:3\d{2}|\(0\d{2}\))\s?\d{3}\s?\d{4}$/g
-							)
-						}
-					/>
+					<TextInput text="Phone" />
 					<form className="role-radios">
 						<p>Role:</p>
 						<label>

@@ -10,7 +10,7 @@ function Login() {
 				<br />
 				<div className={"container"}>
 					<TextInput text={"E-mail"} />
-					<TextInput text={"Password"} />
+					<TextInput text={"Password"} type="password" />
 					<br />
 					<button className={"button saul-goodman"}>Login</button>
 					<br />

@@ -10,17 +10,11 @@ body {
 	text-align: center;
 }
 
-a {
-	font-size: 0.8rem;
-	text-decoration: none;
-	color: dodgerblue;
-}
-
-a:hover {
-	color: #e9c46a;
-}
-
 .saul-goodman:hover {
 	background-image: url("./../public/saul.gif");
 	background-size: cover;
+}
+
+.selected {
+	color: #e76f51 !important;
 }

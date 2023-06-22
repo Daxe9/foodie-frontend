@@ -1,0 +1,67 @@
+.time-table {
+	margin: 1em 2em;
+	text-align: left;
+}
+
+.time-inputs {
+	margin-left: 10%;
+	margin-right: 10%;
+	width: 80%;
+	border-radius: 10px;
+	border: #2a9d8f solid 1px;
+	margin-top: 1em;
+	text-align: center;
+
+	accent-color: #e9c46a;
+}
+
+.time-inputs input {
+	border: none;
+}
+
+.time-inputs input:focus {
+	outline: none;
+}
+
+.time-button {
+	height: 2rem;
+	border-radius: 1rem;
+	font-size: 1.2em;
+	border: none;
+	background-color: #2a9d8f;
+	width: 2rem;
+	margin-bottom: 10px;
+	color: white;
+	margin-right: 1.5%;
+	margin-left: 1.5%;
+}
+
+.time-button:hover {
+	background-color: #e9c46a;
+	color: #e76f51;
+}
+
+.time-button:checked {
+	background-color: #e9c46a;
+	color: #e76f51;
+}
+
+@media screen and (min-width: 350px) {
+	#opening1-input {
+		margin-right: 2%;
+	}
+	#opening2-input {
+		margin-right: 2%;
+	}
+	#closing1-input {
+		margin-left: 2%;
+	}
+	#closing2-input {
+		margin-left: 2%;
+	}
+}
+
+.selected {
+	background-color: #e9c46a;
+	color: #e76f51;
+}

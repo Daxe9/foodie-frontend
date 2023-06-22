@@ -2,7 +2,7 @@ export type Person = {
 	email: string;
 	password: string;
 	address: string;
-	phone: number;
+	phone: string;
 };
 export type User = {
 	firstName: string;
