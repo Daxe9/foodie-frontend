@@ -1,0 +1,19 @@
+.restaurantsDiv {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-around;
+	margin: auto;
+}
+
+.user-page {
+	background-image: url("../../public/roblox.gif");
+	background-size: cover;
+	padding-bottom: 2em;
+}
+
+@media screen and (min-width: 1000px) {
+	.restaurantsDiv {
+		width: 1000px;
+	}
+}

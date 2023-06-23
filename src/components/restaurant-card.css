@@ -1,12 +1,14 @@
-.card img {
+.restaurant-card img {
 	border-radius: 10px;
 	width: 80%;
 }
 
-.card {
-	width: 25%;
-	min-width: 50px;
-	min-height: 70px;
+.restaurant-card {
+	margin-top: 2em;
+	flex-basis: 20%;
+	min-width: 200px;
 }
 
-.
+.restaurant-card p {
+	margin: 0.5em;
+}

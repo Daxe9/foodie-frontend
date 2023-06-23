@@ -9,9 +9,9 @@ export default function CategoryBox(props: CategoryBoxProps) {
 		<div className="categoryBox">
 			<p>Category:</p>
 			<select id="category">
-				{props.options.map((option, i) => {
+				{props.options.map((option, index) => {
 					return (
-						<option value={option} key={i}>
+						<option value={option} key={index}>
 							{option}
 						</option>
 					);

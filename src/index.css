@@ -1,20 +1,33 @@
 body {
 	margin: 0;
 	padding: 0;
-	max-height: 100vh;
+	height: 100svh;
 }
 
 .container {
 	border-radius: 30px;
 	border: black solid 2px;
 	text-align: center;
+	background-color: white;
+	width: clamp(250px, 80%, 350px);
+	padding-bottom: 20px;
+	padding-top: 10px;
 }
 
 .saul-goodman:hover {
 	background-image: url("./../public/saul.gif");
 	background-size: cover;
+	color: white !important;
 }
 
 .selected {
 	color: #e76f51 !important;
+}
+
+.grow {
+	transition: all 0.1s ease-in-out;
+}
+
+.grow:hover {
+	transform: scale(1.1);
 }

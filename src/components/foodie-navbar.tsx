@@ -4,32 +4,51 @@ import { useNavigate } from "react-router-dom";
 
 type FoodieNavbarProps = {
 	links: [string, string, string];
-	paths: [string, string];
+	paths: [string, string, string];
+	selected: number;
 };
 
 export default function FoodieNavbar(props: FoodieNavbarProps) {
-	const navigation1 = useNavigate();
-	const navigation2 = useNavigate();
+	const navigation = useNavigate();
 
 	function firstNavigation() {
-		navigation1(props.paths[0]);
+		navigation(props.paths[0]);
 	}
 
 	function secondNavigation() {
-		navigation2(props.paths[1]);
+		navigation(props.paths[1]);
+	}
+
+	function thirdNavigation() {
+		navigation(props.paths[2]);
 	}
 
 	return (
 		<div className="navbar">
 			<FoodieLogo />
 			<div className="navbar-links">
-				<p onClick={firstNavigation}>
+				<p
+					onClick={firstNavigation}
+					className={
+						props.selected == 1 ? "selected" : "grow clickable"
+					}
+				>
 					<b>{props.links[0]}</b>
 				</p>
-				<p className="selected">
+				<p
+					onClick={secondNavigation}
+					className={
+						props.selected == 2 ? "selected" : "grow clickable"
+					}
+				>
 					<b>{props.links[1]}</b>
 				</p>
-				<p onClick={secondNavigation}>
+				<p
+					onClick={thirdNavigation}
+					className={
+						props.selected == 3 ? "selected" : "grow clickable"
+					}
+				>
 					<b>{props.links[2]}</b>
 				</p>
 			</div>

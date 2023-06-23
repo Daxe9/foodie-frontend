@@ -8,7 +8,7 @@ function Login() {
 			<div className={"login-div"}>
 				<FoodieLogo></FoodieLogo>
 				<br />
-				<div className={"container"}>
+				<div className={"container "}>
 					<TextInput text={"E-mail"} />
 					<TextInput text={"Password"} type="password" />
 					<br />

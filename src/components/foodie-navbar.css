@@ -28,9 +28,13 @@
 	}
 
 	.navbar-links {
-		padding: 0 !important;
 		margin-left: 0 !important;
 		margin-top: 0 !important;
+	}
+
+	.navbar-links p {
+		margin: 0 !important;
+		padding: 5px !important;
 	}
 }
 

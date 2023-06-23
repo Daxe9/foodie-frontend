@@ -4,7 +4,8 @@
 }
 
 .signup-div {
-	min-height: -webkit-fill-available;
+	flex-grow: 1;
+	height: 100%;
 	width: clamp(0px, 100%, 450px);
 	display: flex;
 	flex-direction: column;

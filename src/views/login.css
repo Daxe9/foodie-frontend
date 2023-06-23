@@ -24,13 +24,6 @@
 	color: white;
 }
 
-.container {
-	background-color: white;
-	width: clamp(250px, 80%, 350px);
-	padding-bottom: 20px;
-	padding-top: 10px;
-}
-
 a {
 	font-size: 0.8rem;
 	text-decoration: none;
