@@ -4,6 +4,18 @@ body {
 	height: 100svh;
 }
 
+.clickable {
+	cursor: pointer;
+}
+
+button {
+	cursor: pointer;
+}
+
+#root {
+	height: 100%;
+}
+
 .container {
 	border-radius: 30px;
 	border: black solid 2px;

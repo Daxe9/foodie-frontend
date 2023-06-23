@@ -72,8 +72,6 @@ export default function UserHomepage() {
 	/* let categories: string[] = [
 		"Italian",
 		"Mexican",
-		"Pizzeria",
-		"Kebab",
 		"Chinese",
 		"Fast Food",
 		"Japanese"

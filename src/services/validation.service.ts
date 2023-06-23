@@ -1,5 +1,5 @@
 import { object, string } from "yup";
-import { User } from "../types/entities.ts";
+import { Restaurant, Rider, User } from "../types/entities.ts";
 
 const personSchema = {
 	password: string()
@@ -18,6 +18,14 @@ const personSchema = {
 	phone: string().required()
 };
 
+export async function validateRider(rider: Rider): Promise<Rider> {
+	const riderSchema = object({
+		...personSchema
+	});
+
+	return await riderSchema.validate(rider);
+}
+
 export async function validateUser(user: User): Promise<User> {
 	const userSchema = object({
 		...personSchema,
@@ -26,4 +34,69 @@ export async function validateUser(user: User): Promise<User> {
 	});
 
 	return await userSchema.validate(user);
+}
+
+export async function validateRestaurant(
+	restaurant: Restaurant
+): Promise<Restaurant> {
+	const restaurantSchema = object({
+		name: string().required(),
+		url: string().default(""),
+		category: string().required(),
+		timetable: object().shape({
+			monday: object().shape({
+				opening1: string()
+					.nullable()
+					.typeError("Field must be a string or null"),
+				opening2: string()
+					.nullable()
+					.typeError("Field must be a string or null"),
+				closing1: string()
+					.nullable()
+					.typeError("Field must be a string or null"),
+				closing2: string()
+					.nullable()
+					.typeError("Field must be a string or null")
+			}),
+			tuesday: object().shape({
+				opening1: string().nullable(),
+				opening2: string().nullable(),
+				closing1: string().nullable(),
+				closing2: string().nullable()
+			}),
+			wednesday: object().shape({
+				opening1: string().nullable(),
+				opening2: string().nullable(),
+				closing1: string().nullable(),
+				closing2: string().nullable()
+			}),
+			thursday: object().shape({
+				opening1: string().nullable(),
+				opening2: string().nullable(),
+				closing1: string().nullable(),
+				closing2: string().nullable()
+			}),
+			friday: object().shape({
+				opening1: string().nullable(),
+				opening2: string().nullable(),
+				closing1: string().nullable(),
+				closing2: string().nullable()
+			}),
+			saturday: object().shape({
+				opening1: string().nullable(),
+				opening2: string().nullable(),
+				closing1: string().nullable(),
+				closing2: string().nullable()
+			}),
+			sunday: object().shape({
+				opening1: string().nullable(),
+				opening2: string().nullable(),
+				closing1: string().nullable(),
+				closing2: string().nullable()
+			})
+		})
+	});
+
+	// @ts-ignore
+	return restaurantSchema.validate(restaurant);
 }

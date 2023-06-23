@@ -3,17 +3,32 @@ import TextInput from "../components/text-input.tsx";
 import FoodieLogo from "../components/foodie-logo.tsx";
 import TimeTableHTML from "../components/time-table.tsx";
 import CategoryBox from "../components/category-box.tsx";
-import React, { createRef, JSX, useState } from "react";
-// import { useNavigate } from "react-router-dom";
-import { Person, TimeTable, User } from "../types/entities.ts";
-import { UserNamespace } from "../services/axios.service.ts";
-import { validateUser } from "../services/validation.service.ts";
+import React, { createRef, JSX, useRef, useState } from "react";
+import {
+	Person,
+	Restaurant,
+	Rider,
+	TimeTable,
+	User
+} from "../types/entities.ts";
+import {
+	RestaurantNamespace,
+	RiderNamespace,
+	UserNamespace
+} from "../services/axios.service.ts";
+import {
+	validateRestaurant,
+	validateRider,
+	validateUser
+} from "../services/validation.service.ts";
 
 function Signup() {
 	// const navigate = useNavigate();
 	const user: React.RefObject<HTMLInputElement> = createRef();
 	const restaurant: React.RefObject<HTMLInputElement> = createRef();
 	const rider: React.RefObject<HTMLInputElement> = createRef();
+	const timetableRef = useRef(null);
+	const categoryRef = useRef(null);
 	let categories: string[] = [
 		"Italian",
 		"Mexican",
@@ -23,51 +38,6 @@ function Signup() {
 		"Fast Food",
 		"Japanese"
 	];
-	let timeTable: TimeTable = {
-		monday: {
-			opening1: null,
-			closing1: null,
-			opening2: null,
-			closing2: null
-		},
-		tuesday: {
-			opening1: null,
-			closing1: null,
-			opening2: null,
-			closing2: null
-		},
-		wednesday: {
-			opening1: null,
-			closing1: null,
-			opening2: null,
-			closing2: null
-		},
-		thursday: {
-			opening1: null,
-			closing1: null,
-			opening2: null,
-			closing2: null
-		},
-		friday: {
-			opening1: null,
-			closing1: null,
-			opening2: null,
-			closing2: null
-		},
-		saturday: {
-			opening1: null,
-			closing1: null,
-			opening2: null,
-			closing2: null
-		},
-		sunday: {
-			opening1: null,
-			closing1: null,
-			opening2: null,
-			closing2: null
-		}
-	};
-
 	const [roleDiv, setRoleDiv] = useState<JSX.Element>(
 		<>
 			<TextInput text={"First name"} />
@@ -107,8 +77,9 @@ function Signup() {
 				setRoleDiv(
 					<>
 						<TextInput text="Restaurant name" />
-						<CategoryBox options={categories} />
-						<TimeTableHTML timeTable={timeTable} />
+						<TextInput text="URL" />
+						<CategoryBox ref={categoryRef} options={categories} />
+						<TimeTableHTML ref={timetableRef} />
 					</>
 				);
 				break;
@@ -162,22 +133,24 @@ function Signup() {
 		return temp;
 	}
 
-	function getRestaurantData() {
+	function getRestaurantData(): {
+		name: string;
+		category: string;
+		url: string;
+		timetable: TimeTable;
+	} {
 		const temp: any = {};
 
 		temp.name = (
 			document.getElementById("restaurantName") as HTMLInputElement
 		).value;
-		temp.category = (
-			document.getElementById("category") as HTMLInputElement
-		).value;
-		temp.timeTable = timeTable;
-		console.log(temp);
-		return temp;
-	}
+		temp.url = (document.getElementById("url") as HTMLInputElement).value;
+		// @ts-ignore
+		temp.category = categoryRef.current?.getValue();
+		// @ts-ignore
+		temp.timetable = timetableRef.current?.getTimetable() as Timetable;
 
-	function getRiderData() {
-		return getBaseInformation();
+		return temp;
 	}
 
 	async function signUp() {
@@ -197,10 +170,31 @@ function Signup() {
 				// navigate("/user/homepage");
 				break;
 			case "Restaurant":
-				getRestaurantData();
+				try {
+					const restaurantData: Restaurant = await validateRestaurant(
+						{
+							...baseObj,
+							...getRestaurantData()
+						}
+					);
+					console.log(restaurantData);
+					await RestaurantNamespace.register(restaurantData);
+				} catch (e: any) {
+					// pop up for showing errors
+					console.error(e);
+				}
+				// navigate("/user/homepage");
 				break;
 			case "Rider":
-				getRiderData();
+				try {
+					const riderData: Rider = await validateRider({
+						...baseObj
+					});
+					await RiderNamespace.register(riderData);
+				} catch (e: any) {
+					// pop up for showing errors
+					console.error(e);
+				}
 		}
 	}
 

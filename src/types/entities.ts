@@ -4,6 +4,9 @@ export type Person = {
 	address: string;
 	phone: string;
 };
+
+export type Rider = Person;
+
 export type User = {
 	firstName: string;
 	lastName: string;
@@ -56,5 +59,7 @@ export type TimeTable = {
 
 export type Restaurant = {
 	name: string;
-	timeTable: TimeTable;
+	url: string | undefined;
+	category: string;
+	timetable: TimeTable;
 } & Person;

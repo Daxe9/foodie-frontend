@@ -1,10 +1,18 @@
 import "./category-box.css";
+import { forwardRef, memo, useImperativeHandle } from "react";
 
 type CategoryBoxProps = {
 	options: string[];
 };
 
-export default function CategoryBox(props: CategoryBoxProps) {
+const CategoryBox = forwardRef((props: CategoryBoxProps, _ref: any) => {
+	useImperativeHandle(_ref, () => ({
+		getValue: () => {
+			// @ts-ignore
+			return document.getElementById("category").value;
+		}
+	}));
+
 	return (
 		<div className="categoryBox">
 			<p>Category:</p>
@@ -19,4 +27,6 @@ export default function CategoryBox(props: CategoryBoxProps) {
 			</select>
 		</div>
 	);
-}
+});
+
+export default memo(CategoryBox);
